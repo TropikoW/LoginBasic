@@ -15,19 +15,31 @@
             data() {
                 return {
                     text : 'Login',
-                    login : true,
+                    login : false,
                     user : {
-                        name : 'Jovanny',
+                        name : '',
                         profile : 'https://media.licdn.com/dms/image/D4E03AQEfJYYLVEn9cA/profile-displayphoto-shrink_200_200/0/1698085717176?e=2147483647&v=beta&t=D67W6UJU7BWkqF2xGAEApa6fmBRsG_KCdOY67xia7m8'
                     }
                 }
             },
             methods: {
-
+                toggleLogin() {
+                    if (this.user.name.trim() !== '') {
+                        this.login = !this.login;
+                        if (this.login) {
+                            this.text = 'Logout';
+                        } else {
+                            this.text = 'Login';
+                            this.user.name = '';
+                        }
+                    } else {
+                        alert('Please enter your name');
+                    }
+                }
             },
             computed : {
                 label() {
-                    return this.login ? 'Logout' : 'Login'
+                    return this.login ?  'Login' : 'Logout'
                 },
                 togglebg() {
                     return this.login ? ['bglogin'] : ['bglogout']
@@ -43,13 +55,17 @@
                         this.text = 'Logout'
                     } else {
                         this.text = 'Login'
+                        this.user.name = '';
                     }
                 }
             },
             template : `
                 <div class="container" :class=togglebg>
-                    <h2>{{text}}</h2>
-                    <button :class="togglebtn" @click="login = !login">
+                    <h2>{{label}}</h2>
+                    <div v-if="!login">
+                        <input type="text" placeholder="Enter your name" v-model="user.name" required/>
+                    </div>
+                    <button :class="togglebtn" @click="toggleLogin">
                         <div v-if="!login">Login</div>    
                         <div v-else>Logout</div>
                     </button>
@@ -114,6 +130,12 @@
         .text-user{
             font-size: 15px;
             font-family: Arial, Helvetica, sans-serif;
+        }
+        input{
+            padding: 3px 50px;
+            margin: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            border: none;
         }
     </style>
 </body>
