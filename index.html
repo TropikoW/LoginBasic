@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>project-cuenta</title>
+</head>
+<body>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <div id="App"></div>
+
+    <script>
+        const vm = Vue.createApp({
+            data() {
+                return {
+                    text : 'Login',
+                    login : true,
+                    user : {
+                        name : 'Jovanny',
+                        profile : 'https://media.licdn.com/dms/image/D4E03AQEfJYYLVEn9cA/profile-displayphoto-shrink_200_200/0/1698085717176?e=2147483647&v=beta&t=D67W6UJU7BWkqF2xGAEApa6fmBRsG_KCdOY67xia7m8'
+                    }
+                }
+            },
+            methods: {
+
+            },
+            computed : {
+                label() {
+                    return this.login ? 'Logout' : 'Login'
+                },
+                togglebg() {
+                    return this.login ? ['bglogin'] : ['bglogout']
+                },
+                togglebtn() {
+                    return this.login ? ['bglogout'] : ['bglogin']
+                },
+            }
+            ,
+            watch : {
+                login(value) {
+                    if(value) {
+                        this.text = 'Logout'
+                    } else {
+                        this.text = 'Login'
+                    }
+                }
+            },
+            template : `
+                <div class="container" :class=togglebg>
+                    <h2>{{text}}</h2>
+                    <button :class="togglebtn" @click="login = !login">
+                        <div v-if="!login">Login</div>    
+                        <div v-else>Logout</div>
+                    </button>
+                    <div v-if="login" class="container-user">
+                        <figure>
+                            <img class="profile" :src="user.profile">
+                        </figure>
+                        <h2 class="text-user">¡Hola! {{user.name}}</h2>
+                    </div>
+                </div>
+            `
+        }).mount('#App')
+    </script>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        #App{
+            width: 100%;
+            height: 100vh;
+        }
+        .container{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;            
+        }
+        .bglogin{
+            background-color: #b5e7a0;
+        }
+        .bglogout{
+            background-color: #eca1a6;
+        }
+        h2{
+            font-size: 30px;
+            padding: 20px;
+        }
+        button{
+            padding: 20px 40px;
+            border: none;
+            border-radius: 15px;
+        }
+        .container-user{
+            position: absolute;
+            right: 0;
+            bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            border-radius: 50%;
+        }
+        .profile{
+            border-radius: 50%;
+            width: 80px;
+        }
+        .text-user{
+            font-size: 15px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+</body>
+</html>
